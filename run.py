@@ -5,7 +5,12 @@ app = Flask(__name__)
 messages = []
 
 def add_messages(username, message):
+    """Add messages to the 'messages' list"""
     messages.append("{}: {}".format(username, message))
+
+def get_all_messages():
+    """Get all of the messages and seperate using a <br> tag"""
+    return "<br>".join(messages)
 
 @app.route('/')
 def index():
@@ -16,7 +21,7 @@ def index():
 @app.route('/<username>')
 def user(username):
     """Display chat messages"""
-    return "Welcome, {0} - {1}".format(username, messages)
+    return "<h1>Welcome, {0}</h1>{1}".format(username, get_all_messages())
 
 @app.route('/<username>/<message>')
 def send_message(username, message):
