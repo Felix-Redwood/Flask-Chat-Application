@@ -1,8 +1,9 @@
 import os
 from datetime import datetime #imports the datetime module from python's standard library
-from flask import Flask, redirect, render_template
+from flask import Flask, redirect, render_template, request, session
 
 app = Flask(__name__)
+app.secretkey = "randomstring123"
 messages = []
 
 def add_messages(username, message):
@@ -14,9 +15,16 @@ def get_all_messages():
     """Get all of the messages and seperate using a <br> tag"""
     return "<br>".join(messages)
 
-@app.route('/')
+@app.route('/', methods=["GET", "POST"])
 def index():
     """Main page with instructions"""
+    
+    if request.method == "POST":
+        session["username"] = request.form["username"] #sets the username variable to the username given in the index.html form
+    
+    if "username" in session: #if the "username" variable is set
+        return redirect(session["username"]) #instead of redirecting to index.html, we are going to redirect to the session "username" - e.g. the @app.route("username")
+    
     return render_template("index.html")
 
 
