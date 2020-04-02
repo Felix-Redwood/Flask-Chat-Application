@@ -1,12 +1,14 @@
 import os
-from flask import Flask, redirect
+from datetime import datetime #imports the datetime module from python's standard library
+from flask import Flask, redirect, render_template
 
 app = Flask(__name__)
 messages = []
 
 def add_messages(username, message):
     """Add messages to the 'messages' list"""
-    messages.append("{}: {}".format(username, message))
+    now = datetime.now().strftime("%H:%M:%S") #%H is the hour in 24h format, %M is for the minutes, %S is for the seconds. The now() method gets the current time
+    messages.append("({}) {}: {}".format(now, username, message)) #displays date, username and then message
 
 def get_all_messages():
     """Get all of the messages and seperate using a <br> tag"""
@@ -15,7 +17,7 @@ def get_all_messages():
 @app.route('/')
 def index():
     """Main page with instructions"""
-    return "To send a message use /USERNAME/MESSAGE"
+    return render_template("index.html")
 
 
 @app.route('/<username>')
