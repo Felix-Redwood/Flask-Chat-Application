@@ -3,7 +3,7 @@ from datetime import datetime #imports the datetime module from python's standar
 from flask import Flask, redirect, render_template, request, session
 
 app = Flask(__name__)
-app.secretkey = "randomstring123"
+app.secret_key = "randomstring123"
 messages = []
 
 def add_messages(username, message):
@@ -15,7 +15,7 @@ def get_all_messages():
     """Get all of the messages and seperate using a <br> tag"""
     return "<br>".join(messages)
 
-@app.route('/', methods=["GET", "POST"])
+@app.route("/", methods=["GET", "POST"])
 def index():
     """Main page with instructions"""
     
@@ -28,15 +28,15 @@ def index():
     return render_template("index.html")
 
 
-@app.route('/<username>')
+@app.route("/<username>")
 def user(username):
     """Display chat messages"""
     return "<h1>Welcome, {0}</h1>{1}".format(username, get_all_messages())
 
-@app.route('/<username>/<message>')
+@app.route("/<username>/<message>")
 def send_message(username, message):
     """Create a new message and redirect to the chat page"""
     add_messages(username, message)
     return redirect("/" + username)
 
-app.run(host=os.getenv('IP'), port=int(os.getenv('PORT')), debug=True)
+app.run(host=os.getenv("IP"), port=int(os.getenv("PORT")), debug=True)
