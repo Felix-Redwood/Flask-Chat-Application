@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Chat page for {{ username }}</title>
+</head>
+
+<body>
+    <h1>Welcome!, {{ username }}</h1>
+
+    <form method="POST">
+        <textarea cols="50" rows="4" name="message" id="message"></textarea>
+        <br>
+        <button>Send message</button>
+    </form>
+
+    <!--loads the message_dict and displays the timestamp (the "now" variable), the from (the "username" variable) and the message itself-->
+    {% for message in chat_messages %}
+    <p>({{ message.timestamp }}) {{ message.from }}: {{ message.message }} </p>
+    {% endfor %}
+
+    <!--every 5000 miliseconds (5 seconds) the page is refreshed (that's what location.reload means. The location is the page, and reload causes a refresh). This causes the latest messages to show every 5 seconds-->
+    <script>
+        let textbox = document.getElementById("message")
+
+        let timer = setTimeout(function() {
+            location.reload();
+        }, 5000)
+
+        textbox.onkeydown = function(e) { // whenever a key is pressed, this function will be run
+            clearTimeout(timer) // ends the timer function
+
+            setTimeout(function() { // runs the timer function again
+                location.reload();
+            }, 5000)
+        }
+    </script>
+
+</body>
+
+</html>
